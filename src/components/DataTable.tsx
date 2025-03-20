@@ -53,24 +53,45 @@ const EditableCell: React.FC<EditableCellProps> = ({ getValue, row, column, tabl
 };
 
 export const DataTable: React.FC<DataTableProps> = ({ data, onDataChange }) => {
-  // Copy function for rows
+  // Copy function for rows with rich text formatting
   const handleCopy = (rowData: PoleData) => {
-    // Format data for Word table (tab-separated for easy pasting)
-    const formattedData = `${rowData.stationId}\t${rowData.existingLoading.toFixed(2)}%\t${rowData.finalLoading.toFixed(2)}%\t${rowData.description || ''}`;
+    // Create an HTML table for rich text formatting
+    const htmlContent = `
+      <div style="font-family: 'Times New Roman', Times, serif; font-size: 12pt;">
+        <table border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+          <tr>
+            <td style="font-weight: bold;">${rowData.stationId}</td>
+            <td>${rowData.existingLoading.toFixed(2)}%</td>
+            <td>${rowData.finalLoading.toFixed(2)}%</td>
+            <td>${rowData.description || ''}</td>
+          </tr>
+        </table>
+      </div>
+    `;
     
-    // Create a simple text area element to handle the copy
-    const el = document.createElement('textarea');
-    el.value = formattedData;
-    el.setAttribute('readonly', '');
+    // Create a contentEditable div to handle rich text copy
+    const el = document.createElement('div');
+    el.contentEditable = 'true';
+    el.innerHTML = htmlContent;
     el.style.position = 'absolute';
     el.style.left = '-9999px';
     document.body.appendChild(el);
-    el.select();
+    
+    // Select the content
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    const selection = window.getSelection();
+    if (selection) {
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    
+    // Execute copy command for rich text
     document.execCommand('copy');
     document.body.removeChild(el);
     
     // Show a simple alert for confirmation
-    alert('Data copied to clipboard for Word!');
+    alert('Formatted data copied to clipboard! (Times New Roman 12pt with bold Station ID)');
   };
 
   const columns = React.useMemo(() => [
