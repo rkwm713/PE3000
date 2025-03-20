@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './styles/engineeringBackground.css';
 import { FileUpload } from './components/FileUpload';
 import { DataTable } from './components/DataTable';
 import { PoleData } from './types';
@@ -42,8 +43,9 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen engineering-background py-8 px-4 sm:px-6 lg:px-8">
+      <div className="stress-indicators"></div>
+      <div className="max-w-7xl mx-auto content-overlay p-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Pole Loading Analyzer</h1>
           <p className="mt-2 text-sm text-gray-600">
