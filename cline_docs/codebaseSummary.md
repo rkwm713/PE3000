@@ -17,7 +17,7 @@ graph TD
 - **App.tsx**: Main application component that orchestrates user selection, file processing, and data display
 - **UserSelector.tsx**: Manages user profile selection and persistence
 - **FileUpload.tsx**: Provides drag-and-drop file upload functionality
-- **DataTable.tsx**: Displays the processed pole data in a sortable table
+- **DataTable.tsx**: Displays the processed pole data with editable fields and row copy functionality
 - **localStorage.ts**: Utilities for managing persistence across browser sessions
 
 ## Data Flow
@@ -44,6 +44,8 @@ graph TD
 - Created UserSelector component for profile management
 - Updated App component to handle user-specific data
 - Added data persistence that survives browser refreshes and closures
+- Made station ID and description fields editable in the data table
+- Added row copy functionality for exporting data to Word tables
 
 ## User Feedback Integration
 No external user feedback has been incorporated yet, as this implementation addresses the initial requirements for:

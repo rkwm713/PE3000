@@ -1,50 +1,115 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
-  getSortedRowModel,
   useReactTable,
-  SortingState
+  Row,
+  Column,
+  Table
 } from '@tanstack/react-table';
 import { PoleData } from '../types';
-import { ArrowUpDown } from 'lucide-react';
 
 const columnHelper = createColumnHelper<PoleData>();
 
-const columns = [
-  columnHelper.accessor('stationId', {
-    header: 'Station ID/Pole Number',
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('existingLoading', {
-    header: 'Existing Loading %',
-    cell: info => `${info.getValue().toFixed(2)}%`,
-  }),
-  columnHelper.accessor('finalLoading', {
-    header: 'Final Loading %',
-    cell: info => `${info.getValue().toFixed(2)}%`,
-  }),
-  columnHelper.accessor('description', {
-    header: 'Description',
-    cell: info => info.getValue(),
-  }),
-];
-
 interface DataTableProps {
   data: PoleData[];
+  onDataChange: (updatedData: PoleData[]) => void;
 }
 
-export const DataTable: React.FC<DataTableProps> = ({ data }) => {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+// Define prop types for EditableCell
+interface EditableCellProps {
+  getValue: () => string | number | undefined;
+  row: Row<PoleData>;
+  column: Column<PoleData, unknown>;
+  table: Table<PoleData>;
+  onDataChange: (updatedData: PoleData[]) => void;
+}
+
+// Editable cell component to avoid React hooks inside the cell renderer
+const EditableCell: React.FC<EditableCellProps> = ({ getValue, row, column, table, onDataChange }) => {
+  const initialValue = getValue() || '';
+  const [value, setValue] = useState(initialValue);
+  
+  const onBlur = () => {
+    if (value !== initialValue) {
+      const newData = [...table.options.data];
+      newData[row.index] = {
+        ...newData[row.index],
+        [column.id]: value
+      };
+      onDataChange(newData);
+    }
+  };
+  
+  return (
+    <input
+      value={value}
+      onChange={e => setValue(e.target.value)}
+      onBlur={onBlur}
+      className="p-1 border rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  );
+};
+
+export const DataTable: React.FC<DataTableProps> = ({ data, onDataChange }) => {
+  // Copy function for rows
+  const handleCopy = (rowData: PoleData) => {
+    // Format data for Word table (tab-separated for easy pasting)
+    const formattedData = `${rowData.stationId}\t${rowData.existingLoading.toFixed(2)}%\t${rowData.finalLoading.toFixed(2)}%\t${rowData.description || ''}`;
+    
+    // Create a simple text area element to handle the copy
+    const el = document.createElement('textarea');
+    el.value = formattedData;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    
+    // Show a simple alert for confirmation
+    alert('Data copied to clipboard for Word!');
+  };
+
+  const columns = React.useMemo(() => [
+    columnHelper.accessor('stationId', {
+      header: 'Station ID/Pole Number',
+      cell: props => <EditableCell {...props} onDataChange={onDataChange} />,
+    }),
+    columnHelper.accessor('existingLoading', {
+      header: 'Existing Loading %',
+      cell: info => `${info.getValue().toFixed(2)}%`,
+    }),
+    columnHelper.accessor('finalLoading', {
+      header: 'Final Loading %',
+      cell: info => `${info.getValue().toFixed(2)}%`,
+    }),
+    columnHelper.accessor('description', {
+      header: 'Description',
+      cell: props => <EditableCell {...props} onDataChange={onDataChange} />,
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Action',
+      cell: ({ row }) => (
+        <div>
+          <button
+            onClick={() => handleCopy(row.original)}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+          >
+            Copy
+          </button>
+        </div>
+      ),
+    }),
+  ], [onDataChange]);
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting },
-    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
   });
 
   return (
@@ -56,13 +121,9 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
               {headerGroup.headers.map(header => (
                 <th
                   key={header.id}
-                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
-                  onClick={header.column.getToggleSortingHandler()}
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                 >
-                  <div className="flex items-center gap-2">
-                    {flexRender(header.column.columnDef.header, header.getContext())}
-                    <ArrowUpDown className="h-4 w-4" />
-                  </div>
+                  {flexRender(header.column.columnDef.header, header.getContext())}
                 </th>
               ))}
             </tr>

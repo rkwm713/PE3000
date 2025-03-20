@@ -7,7 +7,7 @@
 - [x] Create responsive data table for viewing pole loading information
 - [x] Add user selection without requiring login
 - [x] Implement data persistence across browser sessions
-- [ ] Add data export capabilities
+- [x] Add data export capabilities (row copying for Word tables)
 - [ ] Add visualization charts for pole loading data
 - [ ] Implement data filtering and advanced search
 - [ ] Add comparison view between different pole loading scenarios
@@ -34,6 +34,7 @@
 - Data table implementation
 - User profile selection component
 - LocalStorage persistence implementation
+- Row data copy feature for Word table compatibility
 
 ## Future Scalability Considerations
 - Consider migrating to IndexedDB for larger datasets

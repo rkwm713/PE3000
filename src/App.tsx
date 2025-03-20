@@ -69,6 +69,17 @@ function App() {
       setIsLoading(false);
     }
   };
+  
+  // Handle data changes from DataTable
+  const handleDataChange = (updatedData: PoleData[]) => {
+    setPoleData(updatedData);
+    
+    // Save the updated data to localStorage
+    saveUserData(selectedUser, {
+      poleData: updatedData,
+      lastUpdated: new Date().toISOString()
+    });
+  };
 
   return (
     <div className="min-h-screen engineering-background py-8 px-4 sm:px-6 lg:px-8">
@@ -115,7 +126,7 @@ function App() {
 
         {poleData.length > 0 && (
           <div className="mt-8">
-            <DataTable data={poleData} />
+            <DataTable data={poleData} onDataChange={handleDataChange} />
           </div>
         )}
       </div>
