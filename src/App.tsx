@@ -1,15 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/engineeringBackground.css';
 import { FileUpload } from './components/FileUpload';
 import { DataTable } from './components/DataTable';
-import { PoleData } from './types';
+import { UserSelector } from './components/UserSelector';
+import { PoleData, UserName } from './types';
 import { processExcel, processPDF, processCSV } from './utils/fileProcessors';
 import { AlertCircle } from 'lucide-react';
+import { 
+  getSelectedUser, 
+  getUserData, 
+  saveUserData 
+} from './utils/localStorage';
 
 function App() {
+  const [selectedUser, setSelectedUser] = useState<UserName>(getSelectedUser);
   const [poleData, setPoleData] = useState<PoleData[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Load user data from localStorage when component mounts or user changes
+  useEffect(() => {
+    const userData = getUserData(selectedUser);
+    if (userData) {
+      setPoleData(userData.poleData);
+    } else {
+      setPoleData([]);
+    }
+  }, [selectedUser]);
+
+  // Handle user selection change
+  const handleUserChange = (username: UserName) => {
+    setSelectedUser(username);
+  };
 
   const handleFiles = async (files: File[]) => {
     setError(null);
@@ -35,6 +57,12 @@ function App() {
       }
 
       setPoleData(allData);
+      
+      // Save the data to localStorage for the current user
+      saveUserData(selectedUser, {
+        poleData: allData,
+        lastUpdated: new Date().toISOString()
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred processing the files');
     } finally {
@@ -66,6 +94,8 @@ function App() {
             Upload your pole loading data files (PDF, Excel, or CSV) to analyze and display the results
           </p>
         </div>
+        
+        <UserSelector onUserChange={handleUserChange} />
 
         <div className="mt-8">
           <FileUpload onFilesAccepted={handleFiles} />
