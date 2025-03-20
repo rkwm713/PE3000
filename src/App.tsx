@@ -89,10 +89,7 @@ function App() {
       <div className="pulse-signals"></div>
       <div className="max-w-7xl mx-auto content-overlay p-6">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900">Pole Loading Analyzer</h1>
-          <p className="mt-2 text-sm text-gray-600">
-            Upload your pole loading data files (PDF, Excel, or CSV) to analyze and display the results
-          </p>
+          <h1 className="text-4xl font-bold text-gray-900 "></h1>
         </div>
         
         <UserSelector onUserChange={handleUserChange} />
