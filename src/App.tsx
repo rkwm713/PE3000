@@ -45,6 +45,20 @@ function App() {
   return (
     <div className="min-h-screen engineering-background py-8 px-4 sm:px-6 lg:px-8">
       <div className="stress-indicators"></div>
+      <div className="lightning-bolts">
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+        <div className="lightning-bolt"></div>
+      </div>
+      <div className="circuit-paths"></div>
+      <div className="pulse-signals"></div>
       <div className="max-w-7xl mx-auto content-overlay p-6">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-900">Pole Loading Analyzer</h1>

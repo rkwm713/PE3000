@@ -2,10 +2,11 @@
 .engineering-background {
   position: relative;
   overflow: hidden;
-  background-color: white;
+  background-color: #0A3251;
+  perspective: 1000px;
 }
 
-/* Blueprint grid base layer */
+/* Blueprint grid base layer with glowing white lines */
 .engineering-background::before {
   content: "";
   position: absolute;
@@ -14,9 +15,10 @@
   right: 0;
   bottom: 0;
   background: 
-    linear-gradient(rgba(4, 69, 141, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(4, 69, 141, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 1px, transparent 1px);
   background-size: 20px 20px;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
   animation: subtleGridMove 120s linear infinite;
   z-index: 1;
 }
@@ -53,38 +55,345 @@
   z-index: 3;
 }
 
+/* Lightning bolts container */
+.engineering-background .lightning-bolts {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 7;
+  pointer-events: none;
+}
+
+/* Lightning bolt base style */
+.lightning-bolt {
+  position: absolute;
+  width: 30px;
+  height: 150px;
+  background-color: #FFFF00;
+  filter: drop-shadow(0 0 20px #FFFF00);
+  clip-path: polygon(
+    50% 0%, 
+    25% 40%, 
+    60% 40%, 
+    25% 75%, 
+    70% 45%, 
+    35% 45%, 
+    50% 0%
+  );
+  z-index: 7;
+}
+
+/* Individual lightning bolts */
+.lightning-bolt:nth-child(1) {
+  top: 15%;
+  left: 10%;
+  height: 180px;
+  transform: rotate(-15deg);
+  animation: 
+    lightningFloat1 13s ease-in-out infinite,
+    lightningFlash 8s ease-in-out infinite 0.5s;
+}
+
+.lightning-bolt:nth-child(2) {
+  top: 25%;
+  left: 30%;
+  height: 120px;
+  transform: rotate(10deg);
+  animation: 
+    lightningFloat2 16s ease-in-out infinite,
+    lightningFlash 7s ease-in-out infinite 1s;
+}
+
+.lightning-bolt:nth-child(3) {
+  top: 10%;
+  left: 50%;
+  height: 210px;
+  transform: rotate(-5deg);
+  animation: 
+    lightningFloat3 14s ease-in-out infinite,
+    lightningFlash 9s ease-in-out infinite 0.7s;
+}
+
+.lightning-bolt:nth-child(4) {
+  top: 30%;
+  left: 70%;
+  height: 135px;
+  transform: rotate(20deg);
+  animation: 
+    lightningFloat4 15s ease-in-out infinite,
+    lightningFlash 6s ease-in-out infinite 1.5s;
+}
+
+.lightning-bolt:nth-child(5) {
+  top: 20%;
+  left: 90%;
+  height: 165px;
+  transform: rotate(5deg);
+  animation: 
+    lightningFloat5 12s ease-in-out infinite,
+    lightningFlash 10s ease-in-out infinite 0.2s;
+}
+
+.lightning-bolt:nth-child(6) {
+  top: 60%;
+  left: 15%;
+  height: 150px;
+  transform: rotate(15deg);
+  animation: 
+    lightningFloat6 17s ease-in-out infinite,
+    lightningFlash 7.5s ease-in-out infinite 1.2s;
+}
+
+.lightning-bolt:nth-child(7) {
+  top: 65%;
+  left: 35%;
+  height: 195px;
+  transform: rotate(-10deg);
+  animation: 
+    lightningFloat7 14.5s ease-in-out infinite,
+    lightningFlash 8.5s ease-in-out infinite 0.3s;
+}
+
+.lightning-bolt:nth-child(8) {
+  top: 50%;
+  left: 55%;
+  height: 135px;
+  transform: rotate(0deg);
+  animation: 
+    lightningFloat8 11s ease-in-out infinite,
+    lightningFlash 9.5s ease-in-out infinite 2s;
+}
+
+.lightning-bolt:nth-child(9) {
+  top: 70%;
+  left: 75%;
+  height: 180px;
+  transform: rotate(-20deg);
+  animation: 
+    lightningFloat9 13.5s ease-in-out infinite,
+    lightningFlash 7s ease-in-out infinite 1.7s;
+}
+
+.lightning-bolt:nth-child(10) {
+  top: 80%;
+  left: 95%;
+  height: 150px;
+  transform: rotate(5deg);
+  animation: 
+    lightningFloat10 15.5s ease-in-out infinite,
+    lightningFlash 8s ease-in-out infinite 0.8s;
+}
+
+/* Circuit pathways layer */
+.engineering-background .circuit-paths {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 30% 40%, rgba(10, 132, 255, 0.01) 0%, transparent 80px) 50px 100px,
+    radial-gradient(circle at 70% 60%, rgba(10, 132, 255, 0.01) 0%, transparent 60px) 200px 300px,
+    radial-gradient(circle at 40% 80%, rgba(10, 132, 255, 0.01) 0%, transparent 70px) 300px 100px,
+    radial-gradient(circle at 80% 30%, rgba(10, 132, 255, 0.01) 0%, transparent 80px) 400px 200px;
+  background-repeat: repeat;
+  z-index: 5;
+  animation: circuitPathsPulse 8s ease-in-out infinite;
+}
+
+/* Pulse signals that occasionally appear */
+.engineering-background .pulse-signals {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  opacity: 0;
+}
+
+.engineering-background .pulse-signals::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 30% 40%, rgba(48, 209, 88, 0.05) 0%, transparent 120px);
+  animation: pulseSignal1 10s ease-in-out infinite;
+}
+
+.engineering-background .pulse-signals::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 70% 60%, rgba(10, 132, 255, 0.04) 0%, transparent 140px);
+  animation: pulseSignal2 13s ease-in-out infinite 2s;
+}
+
 /* Animations */
 @keyframes subtleGridMove {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(-5px, -2px); }
-  50% { transform: translate(-10px, 0); }
-  75% { transform: translate(-5px, 2px); }
-  100% { transform: translate(0, 0); }
+  0% { transform: translate(0, 0) rotate3d(1, 0, 1, 0deg); }
+  25% { transform: translate(-5px, -2px) rotate3d(1, 0, 1, 0.5deg); }
+  50% { transform: translate(-10px, 0) rotate3d(1, 0, 1, 0deg); }
+  75% { transform: translate(-5px, 2px) rotate3d(1, 0, 1, -0.5deg); }
+  100% { transform: translate(0, 0) rotate3d(1, 0, 1, 0deg); }
 }
 
 @keyframes poleElementsMove {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(5px, 5px); }
-  50% { transform: translate(10px, 0); }
-  75% { transform: translate(5px, -5px); }
-  100% { transform: translate(0, 0); }
+  0% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(5px, 5px) scale(1.02); }
+  50% { transform: translate(10px, 0) scale(1.01); }
+  75% { transform: translate(5px, -5px) scale(1.02); }
+  100% { transform: translate(0, 0) scale(1); }
 }
 
 @keyframes stressIndicatorsMove {
   0%, 100% { 
     opacity: 0.2;
-    transform: scale(1); 
+    transform: scale(1) skew(0deg, 0deg); 
+  }
+  25% {
+    opacity: 0.25;
+    transform: scale(1.01) skew(0.2deg, 0.1deg);
   }
   50% { 
     opacity: 0.3;
-    transform: scale(1.02); 
+    transform: scale(1.02) skew(0deg, 0deg); 
+  }
+  75% {
+    opacity: 0.25;
+    transform: scale(1.01) skew(-0.2deg, -0.1deg);
   }
 }
 
-/* Content overlay to ensure text remains readable */
+/* Lightning float animations */
+@keyframes lightningFloat1 {
+  0%, 100% { transform: translate(0, 0) rotate(-15deg) scale(1); }
+  25% { transform: translate(20px, 10px) rotate(-10deg) scale(1.1); }
+  50% { transform: translate(10px, 30px) rotate(-20deg) scale(0.9); }
+  75% { transform: translate(-15px, 15px) rotate(-5deg) scale(1.2); }
+}
+
+@keyframes lightningFloat2 {
+  0%, 100% { transform: translate(0, 0) rotate(10deg) scale(1); }
+  20% { transform: translate(-25px, -15px) rotate(5deg) scale(1.3); }
+  40% { transform: translate(15px, -20px) rotate(15deg) scale(1.1); }
+  60% { transform: translate(30px, 10px) rotate(5deg) scale(1.2); }
+  80% { transform: translate(10px, 25px) rotate(20deg) scale(1.4); }
+}
+
+@keyframes lightningFloat3 {
+  0%, 100% { transform: translate(0, 0) rotate(-5deg) scale(1); }
+  30% { transform: translate(-10px, 20px) rotate(0deg) scale(1.2); }
+  60% { transform: translate(15px, 10px) rotate(-10deg) scale(0.9); }
+  80% { transform: translate(5px, -15px) rotate(-15deg) scale(1.1); }
+}
+
+@keyframes lightningFloat4 {
+  0%, 100% { transform: translate(0, 0) rotate(20deg) scale(1); }
+  25% { transform: translate(15px, -25px) rotate(15deg) scale(1.2); }
+  55% { transform: translate(-20px, -10px) rotate(25deg) scale(0.8); }
+  75% { transform: translate(-10px, 20px) rotate(10deg) scale(1.3); }
+}
+
+@keyframes lightningFloat5 {
+  0%, 100% { transform: translate(0, 0) rotate(5deg) scale(1); }
+  35% { transform: translate(-15px, 10px) rotate(0deg) scale(1.1); }
+  65% { transform: translate(20px, 5px) rotate(10deg) scale(0.9); }
+  85% { transform: translate(10px, -20px) rotate(15deg) scale(1.2); }
+}
+
+@keyframes lightningFloat6 {
+  0%, 100% { transform: translate(0, 0) rotate(15deg) scale(1); }
+  20% { transform: translate(25px, 10px) rotate(10deg) scale(1.2); }
+  50% { transform: translate(5px, -15px) rotate(20deg) scale(0.9); }
+  80% { transform: translate(-10px, -5px) rotate(5deg) scale(1.1); }
+}
+
+@keyframes lightningFloat7 {
+  0%, 100% { transform: translate(0, 0) rotate(-10deg) scale(1); }
+  30% { transform: translate(-20px, -10px) rotate(-15deg) scale(1.3); }
+  55% { transform: translate(-5px, 25px) rotate(-5deg) scale(0.8); }
+  80% { transform: translate(15px, 5px) rotate(-20deg) scale(1.2); }
+}
+
+@keyframes lightningFloat8 {
+  0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+  25% { transform: translate(10px, -20px) rotate(5deg) scale(1.1); }
+  60% { transform: translate(-10px, -5px) rotate(-5deg) scale(0.9); }
+  85% { transform: translate(-15px, 15px) rotate(10deg) scale(1.2); }
+}
+
+@keyframes lightningFloat9 {
+  0%, 100% { transform: translate(0, 0) rotate(-20deg) scale(1); }
+  20% { transform: translate(-15px, 15px) rotate(-15deg) scale(1.2); }
+  50% { transform: translate(20px, 5px) rotate(-25deg) scale(0.8); }
+  75% { transform: translate(10px, -20px) rotate(-10deg) scale(1.3); }
+}
+
+@keyframes lightningFloat10 {
+  0%, 100% { transform: translate(0, 0) rotate(5deg) scale(1); }
+  30% { transform: translate(15px, 10px) rotate(0deg) scale(1.1); }
+  65% { transform: translate(-20px, -5px) rotate(10deg) scale(0.9); }
+  85% { transform: translate(-10px, 20px) rotate(15deg) scale(1.2); }
+}
+
+@keyframes lightningFlash {
+  0%, 45%, 47%, 52%, 92%, 95%, 100% { opacity: 0; }
+  46%, 49%, 50%, 51%, 93%, 94% { opacity: 1; }
+}
+
+@keyframes circuitPathsPulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.03);
+  }
+}
+
+@keyframes pulseSignal1 {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  30% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes pulseSignal2 {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  30% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+/* Content overlay to ensure text remains readable against dark background */
 .content-overlay {
   position: relative;
   z-index: 10;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
   border-radius: 0.5rem;
 }
